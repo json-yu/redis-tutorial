@@ -7,13 +7,19 @@ const PORT_REDIS = process.env.PORT || 6379;
 const redis_client = redis.createClient(PORT_REDIS);
 
 apiController.checkCache = (req, res, next) => {
+
+
+
+
     return next();
 }
 
 apiController.callForHelp = (req, res, next) => {
-  const heroId = req.body.random ? Math.floor(Math.random() * (732 - 1) + 1) : 659; // 659 is the id for Thor
+  const heroId = req.query ? Math.floor(Math.random() * (732 - 1) + 1) : 659; // 659 is the id for Thor
   const hero_path = `${process.env.API_PATH}/${heroId}`;
   
+  // console.log(req.query);
+
   axios(hero_path)
   .then(hero => {
     if (hero.data.name === undefined) {
@@ -34,7 +40,7 @@ apiController.callForHelp = (req, res, next) => {
     redis_client.setex(hero.data.id, 3600, JSON.stringify(heroObj));
 
     res.locals.hero = heroObj;
-    console.log(res.locals.hero);
+    // console.log(res.locals.hero);
 
     return next();
   })
