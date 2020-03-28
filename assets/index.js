@@ -15,11 +15,12 @@ const callForHelp = () => {
 
       if (!hasBeenCalled) {
           hasBeenCalled = true;
-          const callForHelpAgain = document.createElement('button');
-          callForHelpAgain.id = 'help-again'
-          callForHelpAgain.innerHTML = 'Call for help again!';
-          callForHelpAgain.addEventListener('click', callForHelpAgain);
-          document.getElementById('section-one').appendChild(callForHelpAgain);
+          const callForHelpAgainButton = document.createElement('button');
+          callForHelpAgainButton.id = 'help-again';
+          callForHelpAgainButton.heroId = `${hero.id}`
+          callForHelpAgainButton.innerHTML = 'Call for help again!';
+          callForHelpAgainButton.addEventListener('click', callForHelpAgain);
+          document.getElementById('section-one').appendChild(callForHelpAgainButton);
       };
     })
     .catch(err => {
@@ -28,11 +29,12 @@ const callForHelp = () => {
 }
 
 const callForHelpAgain = () => {
-    hasBeenCalled = false;
-    document.getElementById('help-again').remove();
-    document.getElementById('hero-name').innerHTML = '';
-    document.getElementById('hero-picture').src = '';
-    callForHelp();
+  hasBeenCalled = false;
+  const heroId = document.getElementById('help-again').heroId; 
+  document.getElementById('help-again').remove();
+  document.getElementById('hero-name').innerHTML = '';
+  document.getElementById('hero-picture').src = '';
+  callForHelp();
 }
 
 helpButton.addEventListener('click', callForHelp);
