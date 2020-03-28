@@ -7,18 +7,28 @@ const PORT_REDIS = process.env.PORT || 6379;
 const redis_client = redis.createClient(PORT_REDIS);
 
 apiController.checkCache = (req, res, next) => {
-
-
-
-
-    return next();
-}
+  const { id } = req.params;
+  
+  redis_client.get(id, (err, data) => {
+    if (err) {
+      return next({
+        log: `ERROR: Invalid or unfound data from redis client.`,
+        status: 500,
+        message: { err: 'Something went wrong with the data cache. Check the server log for details.'}
+      })
+    };
+    if (data) {
+      console.log(data);
+      const heroData = JSON.parse(data);
+      res.status(200).json(heroData);
+    }
+    else return next();
+  });
+};
 
 apiController.callForHelp = (req, res, next) => {
-  const heroId = req.query ? Math.floor(Math.random() * (732 - 1) + 1) : 659; // 659 is the id for Thor
+  const heroId = 659; // 659 is the id for Thor
   const hero_path = `${process.env.API_PATH}/${heroId}`;
-  
-  // console.log(req.query);
 
   axios(hero_path)
   .then(hero => {
@@ -40,13 +50,10 @@ apiController.callForHelp = (req, res, next) => {
     redis_client.setex(hero.data.id, 3600, JSON.stringify(heroObj));
 
     res.locals.hero = heroObj;
-    // console.log(res.locals.hero);
 
     return next();
   })
   .catch(err => console.log(err));
-}
-
-
+};
 
 module.exports = apiController;
