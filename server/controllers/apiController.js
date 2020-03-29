@@ -18,7 +18,6 @@ apiController.checkCache = (req, res, next) => {
       })
     };
     if (data) {
-      console.log(data);
       const heroData = JSON.parse(data);
       res.status(200).json(heroData);
     }
