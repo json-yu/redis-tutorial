@@ -1,5 +1,4 @@
 const helpButton = document.getElementById('help-button');
-let hasBeenCalled = false; // initial boolean to help control which buttons show
 
 const callForHelp = id => {
   // upon initial fetch, there will be no id
@@ -11,18 +10,16 @@ const callForHelp = id => {
         return;
       };
 
+      document.getElementById('help-button').style.display = "none";
       document.getElementById('hero-name').innerHTML = hero.name;
       document.getElementById('hero-picture').src = hero.image;
 
-      if (!hasBeenCalled) {
-        hasBeenCalled = true;
-        const callForHelpAgainButton = document.createElement('button');
-        callForHelpAgainButton.id = 'help-again';
-        callForHelpAgainButton.heroId = `${hero.id}`
-        callForHelpAgainButton.innerHTML = 'Call for help again!';
-        callForHelpAgainButton.addEventListener('click', callForHelpAgain);
-        document.getElementById('section-one').appendChild(callForHelpAgainButton);
-      }
+      const callForHelpAgainButton = document.createElement('button');
+      callForHelpAgainButton.id = 'help-again';
+      callForHelpAgainButton.heroId = `${hero.id}`
+      callForHelpAgainButton.innerHTML = 'Call for help again!';
+      callForHelpAgainButton.addEventListener('click', callForHelpAgain);
+      document.getElementById('section-one').appendChild(callForHelpAgainButton);
     })
     .catch(err => {
       console.log('Err in callForHelp: ', err);
@@ -30,7 +27,6 @@ const callForHelp = id => {
 };
 
 const callForHelpAgain = () => {
-  hasBeenCalled = false;
   // grab the heroId before removing the html element
   const heroId = document.getElementById('help-again').heroId;
   document.getElementById('help-again').remove();
