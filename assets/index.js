@@ -10,10 +10,14 @@ const callForHelp = id => {
         return;
       };
 
+      // hide original button
       document.getElementById('help-button').style.display = "none";
+
+      // create html elements using data retrieved
       document.getElementById('hero-name').innerHTML = hero.name;
       document.getElementById('hero-picture').src = hero.image;
 
+      // create new button
       const callForHelpAgainButton = document.createElement('button');
       callForHelpAgainButton.id = 'help-again';
       callForHelpAgainButton.heroId = `${hero.id}`
@@ -33,7 +37,7 @@ const callForHelpAgain = () => {
   // clear the existing html details
   document.getElementById('hero-name').innerHTML = '';
   document.getElementById('hero-picture').src = '';
-  callForHelp(heroId);
+  callForHelp(heroId); 
 };
 
 helpButton.addEventListener('click', callForHelp);
